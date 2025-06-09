@@ -1,0 +1,128 @@
+// src/features/Consultas/ConsultasScreen/styles.js
+import { StyleSheet } from 'react-native';
+import VARS from '../../../styles/variables'; // Importa VARS do arquivo central
+
+const consultasScreenStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: VARS.spacingMd,
+    backgroundColor: '#f5f5f5',
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: VARS.primaryColor,
+    marginBottom: VARS.spacingMd,
+  },
+  btnAdd: {
+    backgroundColor: '#10b981',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    flexDirection: 'row', // Para alinhar ícone e texto
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'flex-start', // Para que o botão não ocupe toda a largura
+    marginBottom: VARS.spacingMd,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  btnAddText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  tableContainer: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    overflow: 'hidden',
+    marginBottom: VARS.spacingMd,
+  },
+  tableHeader: {
+    flexDirection: 'row',
+    backgroundColor: '#f3f4f6',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  tableHeaderCell: {
+    flex: 1,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    paddingHorizontal: 5,
+  },
+  tableRow: {
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+    alignItems: 'center',
+  },
+  tableRowCell: {
+    flex: 1,
+    textAlign: 'center',
+    paddingHorizontal: 5,
+    fontSize: 14,
+  },
+  actionsCell: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 5, // Espaçamento entre os botões
+  },
+  btnAction: {
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 6,
+    alignItems: 'center',
+  },
+  btnEdit: {
+    backgroundColor: '#2563eb',
+  },
+  btnEditText: {
+    color: 'white',
+    fontSize: 12,
+  },
+  btnDelete: {
+    backgroundColor: '#dc2626',
+  },
+  btnDeleteText: {
+    color: 'white',
+    fontSize: 12,
+  },
+  emptyTableText: {
+    textAlign: 'center',
+    padding: 20,
+    color: VARS.textMedium,
+    fontSize: 16,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 18,
+    color: VARS.textMedium,
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+  },
+  errorText: {
+    color: 'red',
+    fontWeight: 'bold',
+    fontSize: 18,
+  },
+});
+
+export { consultasScreenStyles };
