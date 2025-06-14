@@ -59,7 +59,7 @@ export default function ConsultaModal({ isOpen, onClose, onSubmit, initialData, 
     if (event.type === 'set') {
       const currentDate = selectedDate || new Date();
       setDateForPicker(currentDate);
-      if (Platform.OS === 'android') { // No Android, precisamos abrir o TimePicker separadamente
+      if (Platform.OS === 'android') { 
         setShowTimePicker(true);
       } else { 
         setShowTimePicker(true);
@@ -121,8 +121,8 @@ export default function ConsultaModal({ isOpen, onClose, onSubmit, initialData, 
           <ScrollView 
             style={consultaModalStyles.scrollView} 
             contentContainerStyle={consultaModalStyles.formContentContainer} 
-            showsVerticalScrollIndicator={false} // Opcional: esconder a barra de rolagem
-            keyboardShouldPersistTaps="handled" // Importante para que toques fora dos inputs fechem o teclado
+            showsVerticalScrollIndicator={false} 
+            keyboardShouldPersistTaps="handled" 
           >
             {isAdminOrMedico && (
               <>
@@ -136,7 +136,7 @@ export default function ConsultaModal({ isOpen, onClose, onSubmit, initialData, 
                   >
                     <Picker.Item label="Selecione um paciente" value="" />
                     {pacientes.map(p => (
-                      <Picker.Item key={p.pacienteId} label={String(p.nome)} value={p.pacienteId} />
+                      <Picker.Item key={String(p.pacienteId)} label={String(p.nome)} value={p.pacienteId} />
                     ))}
                   </Picker>
                 </View>
@@ -153,7 +153,7 @@ export default function ConsultaModal({ isOpen, onClose, onSubmit, initialData, 
               >
                 <Picker.Item label="Selecione um médico" value="" />
                 {medicos.map(m => (
-                  <Picker.Item key={m.crm} label={String(m.nome)} value={m.crm} />
+                  <Picker.Item key={String(m.crm)} label={String(m.nome)} value={m.crm} />
                 ))}
               </Picker>
             </View>
@@ -178,7 +178,7 @@ export default function ConsultaModal({ isOpen, onClose, onSubmit, initialData, 
               <DateTimePicker
                 value={dateForPicker}
                 mode="date"
-                display={Platform.OS === 'ios' ? 'spinner' : 'default'} // 'spinner' para iOS é mais consistente
+                display={Platform.OS === 'ios' ? 'spinner' : 'default'} 
                 onChange={onDateSelect}
               />
             )}

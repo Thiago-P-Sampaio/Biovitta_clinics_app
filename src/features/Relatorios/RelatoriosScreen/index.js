@@ -37,23 +37,24 @@ export default function RelatoriosScreen() {
       const filename = 'relatorio_consultas.pdf';
       const fileUri = FileSystem.documentDirectory + filename; // Caminho para salvar no dispositivo
 
-      // Faz a requisição, esperando um blob (arquivo)
+      // 1. Faz a requisição, esperando um ArrayBuffer para dados binários
       const response = await api.get('api/relatorios/consultas', {
-        responseType: 'blob', // A resposta esperada é um blob
+        responseType: 'arraybuffer', // Alterado para 'arraybuffer'
       });
 
-      // Ler o blob como ArrayBuffer
-      const reader = new FileReader();
-      reader.readAsArrayBuffer(response.data);
-      await new Promise(resolve => (reader.onloadend = resolve));
-      const base64data = Buffer.from(reader.result).toString('base64');
+      // 2. Converte o ArrayBuffer recebido para uma string Base64
+      // Esta é a forma padrão de converter ArrayBuffer para Base64 em ambientes de navegador/React Native
+      const base64data = btoa(
+        new Uint8Array(response.data)
+          .reduce((data, byte) => data + String.fromCharCode(byte), '')
+      );
 
-      // Salva o arquivo no sistema de arquivos local
+      // 3. Salva o arquivo Base64 no sistema de arquivos local
       await FileSystem.writeAsStringAsync(fileUri, base64data, {
         encoding: FileSystem.EncodingType.Base64,
       });
 
-      // Abre o arquivo com um visualizador
+      // 4. Abre o arquivo com um visualizador apropriado
       if (Platform.OS === 'android') {
         const cUri = await FileSystem.getContentUriAsync(fileUri);
         await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
@@ -70,7 +71,7 @@ export default function RelatoriosScreen() {
     } catch (err) {
       console.error('Erro ao baixar relatório:', err.response?.data || err.message || err);
       setError('Erro ao baixar relatório. Tente novamente.');
-      Alert.alert('Erro', 'Erro ao baixar relatório. Verifique sua conexão ou permissões.');
+      Alert.alert('Erro', 'Erro ao baixar relatório. Verifique sua conexão ou permissões. Detalhes: ' + (err.response?.data || err.message));
     } finally {
       setLoading(false);
     }

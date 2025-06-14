@@ -40,7 +40,7 @@ export default function PacienteDetalhesModal({ isOpen, onClose, paciente }) {
 
         <View style={pacienteDetalhesModalStyles.pacienteDetailsBody}>
           <Text style={pacienteDetalhesModalStyles.pacienteDetailItem}>
-            <Text style={pacienteDetalhesModalStyles.pacienteDetailLabel}>ID:</Text> <Text>{paciente.pacienteId || paciente.id}</Text>
+            <Text style={pacienteDetalhesModalStyles.pacienteDetailLabel}>ID:</Text><Text>{String(paciente.pacienteId || paciente.id)}</Text> {/* CORRIGIDO: Espaço removido aqui */}
           </Text>
           <Text style={pacienteDetalhesModalStyles.pacienteDetailItem}>
             <Icon name="envelope" style={pacienteDetalhesModalStyles.pacienteDetailIcon} />

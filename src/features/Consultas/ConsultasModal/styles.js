@@ -8,24 +8,25 @@ const consultaModalStyles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.6)',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: 20,
   },
   modalContent: {
     backgroundColor: 'white',
     borderRadius: 12,
-    padding: 24,
     width: '90%',
     maxWidth: 450,
+    maxHeight: screenHeight * 0.85, // Evita ultrapassar a tela
+    minHeight: screenHeight * 0.5,  // Garante altura mínima
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.1,
     shadowRadius: 10,
     elevation: 8,
-    // Remover maxHeight e deixar o flexbox determinar a altura com base no conteúdo e no ScrollView
-    // maxHeight: screenHeight * 0.85, // Manter um limite de altura baseado na tela
-    maxHeight: '85%', // Tentar com porcentagem novamente, ou um valor fixo (ex: 600) se ainda houver problemas
-    overflow: 'hidden', // Manter hidden para o borderRadius funcionar no Modal
+    overflow: 'hidden',
     position: 'relative',
     flexDirection: 'column',
+    flex: 1, // Permite expansão dentro do modalOverlay
+    justifyContent: 'space-between', // Mantém espaçamento visual entre título, conteúdo e ações
   },
   modalCloseButton: {
     position: 'absolute',
@@ -42,20 +43,21 @@ const consultaModalStyles = StyleSheet.create({
   modalTitle: {
     fontSize: 26,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 10,
     textAlign: 'center',
     color: '#6A1B9A',
-    paddingRight: 30, 
+    paddingRight: 30,
+    paddingTop: 15,
+    paddingHorizontal: 24,
   },
   scrollView: {
-    flex: 1, // **CRUCIAL**: Permite que a ScrollView se expanda e ocupe o espaço restante
+    flex: 1,
     width: '100%',
-    // Para debug visual: backgroundColor: 'lightblue',
   },
-  formContentContainer: { // Renomeado de 'form' para 'formContentContainer'
-    flexGrow: 1, // Permite que o conteúdo do formulário se estenda e role
-    paddingBottom: 20, // Espaçamento inferior para evitar que o último input seja cortado
-    // Para debug visual: backgroundColor: 'lightgreen',
+  formContentContainer: {
+    flexGrow: 1,
+    paddingBottom: 20,
+    paddingHorizontal: 24,
   },
   label: {
     fontSize: 16,
@@ -89,7 +91,7 @@ const consultaModalStyles = StyleSheet.create({
   },
   picker: {
     width: '100%',
-    height: 50,
+    height: 80,
     color: '#333',
   },
   modalActions: {
@@ -100,6 +102,7 @@ const consultaModalStyles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#eee',
     paddingTop: 20,
+    paddingHorizontal: 24,
     width: '100%',
   },
   btn: {

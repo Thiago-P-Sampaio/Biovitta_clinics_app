@@ -13,8 +13,10 @@ import MainLayout from './src/components/Layout/index'; // Path to MainLayout (w
 
 const RootStack = createNativeStackNavigator();
 
+
 function AppRoutes() {
-  const { user, loading } = useAuth(); // Get authentication state from AuthContext
+  const { user, loading } = useAuth(); // Obtém o estado de autenticação do AuthContext
+
 
   if (loading) {
     return (
@@ -26,13 +28,14 @@ function AppRoutes() {
     );
   }
 
+
   return (
     <RootStack.Navigator screenOptions={{ headerShown: false }}>
       {user ? (
-        // If authenticated, show the main app area (MainLayout with Drawer Navigator)
+
         <RootStack.Screen name="MainApp" component={MainLayout} />
       ) : (
-        // If not authenticated, show the authentication screens
+
         <RootStack.Group>
           <RootStack.Screen name="Login" component={LoginScreen} />
           <RootStack.Screen name="Register" component={RegisterScreen} />
@@ -41,6 +44,7 @@ function AppRoutes() {
     </RootStack.Navigator>
   );
 }
+
 
 export default function App() {
   return (
@@ -51,6 +55,7 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
 
 const appStyles = StyleSheet.create({
   loadingContainer: {
