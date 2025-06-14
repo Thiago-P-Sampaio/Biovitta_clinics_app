@@ -1,31 +1,12 @@
-// src/features/Medicos/MedicoDetalhesModal/index.js
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, Alert } from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/FontAwesome5'; // Usando FontAwesome5
-import api from '../../../services/api';
 import { medicoDetalhesModalStyles } from './styles'; // Caminho corrigido
 
 export default function MedicoDetalhesModal({ isOpen, onClose, medico }) {
-  const [especialidades, setEspecialidades] = useState([]);
-
-  useEffect(() => {
-    async function fetchEspecialidades() {
-      if (!medico || !medico.crm) {
-        setEspecialidades([]);
-        return;
-      }
-      try {
-        const res = await api.get(`/api/medicos/${medico.crm}/especialidades`);
-        setEspecialidades(Array.isArray(res.data.especialidadesLista) ? res.data.especialidadesLista : []);
-      } catch (error) {
-        console.error('Erro ao carregar especialidades do médico', error);
-        Alert.alert('Erro', 'Não foi possível carregar as especialidades do médico.');
-        setEspecialidades([]);
-      }
-    }
-    if (isOpen && medico) fetchEspecialidades();
-  }, [isOpen, medico]);
+  // Não há mais necessidade de um estado para especialidades nem de um useEffect para buscá-las,
+  // pois a especialidade já vem como string no objeto medico.
 
   if (!isOpen || !medico) return null;
 
@@ -61,7 +42,7 @@ export default function MedicoDetalhesModal({ isOpen, onClose, medico }) {
           </Text>
           <Text style={[medicoDetalhesModalStyles.medicoDetailItem, medicoDetalhesModalStyles.medicoDetailItemLast]}>
             <Icon name="tags" style={medicoDetalhesModalStyles.medicoDetailIcon} />
-            <Text style={medicoDetalhesModalStyles.medicoDetailLabel}>Especialidades:</Text> {especialidades.map(e => e.nome).join(', ') || 'Nenhuma'}
+            <Text style={medicoDetalhesModalStyles.medicoDetailLabel}>Especialidade:</Text> {medico.especialidades || 'Nenhuma'}
           </Text>
         </View>
 

@@ -26,10 +26,7 @@ const homeStyles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'center',
     gap: 24, // Este `gap` funciona em RN 0.71+
-    // Para versões mais antigas ou garantir compatibilidade, use:
-    // marginHorizontal: -12, // Metade do gap para compensar e alinhar
-    // marginVertical: -12,
-    // E no atalhoCard: marginBottom: 24, marginRight: 24 (ou flexBasis/width para controlar a quebra de linha)
+
   },
   atalhoCard: {
     backgroundColor: '#fff',
@@ -44,10 +41,7 @@ const homeStyles = StyleSheet.create({
     minWidth: 150, // Garante um tamanho mínimo
     alignItems: 'center',
     justifyContent: 'center',
-    // Se 'gap' não funcionar perfeitamente, use:
-    // marginBottom: 24,
-    // marginRight: 24, // Este será aplicado a todos, e o flexWrap cuidará da quebra
-    // Remova marginHorizontal/marginVertical do cardContainer se usar isso.
+   
   },
   atalhoCardText: {
     color: VARS.primaryColor, // Usando VARS

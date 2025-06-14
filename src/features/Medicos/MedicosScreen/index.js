@@ -3,7 +3,7 @@ import { View, Text, ActivityIndicator, FlatList, TouchableOpacity, StyleSheet, 
 import api from '../../../services/api';
 import CardMedico from '../../../components/CardMedico';
 import MedicoModal from '../../Medicos/MedicosModal/index'; // Caminho corrigido
-import MedicoDetalhesModal from '../../Medicos/MedicosDetalhesModal/index'; // Caminho corrigido
+import MedicoDetalhesModal from '../MedicosDetalhesModal/index'; // Caminho corrigido
 import { useAuth } from '../../../context/AuthContext';
 import SearchBar from '../../../components/SearchBar';
 import { medicosScreenStyles } from './styles'; // Caminho corrigido
@@ -43,7 +43,7 @@ export default function MedicosScreen() { // Renomeado para MedicosScreen
         (medico.email && medico.email.toLowerCase().includes(lowerCaseQuery)) ||
         (medico.crm && medico.crm.toLowerCase().includes(lowerCaseQuery)) ||
         (medico.telefone && medico.telefone.toLowerCase().includes(lowerCaseQuery)) ||
-        (medico.especialidades?.some(e => e.nome.toLowerCase().includes(lowerCaseQuery)))
+        (medico.especialidades && medico.especialidades.toLowerCase().includes(lowerCaseQuery)) // Adaptação para string
       );
       setFilteredMedicos(filtered);
     } else {
@@ -221,5 +221,3 @@ export default function MedicosScreen() { // Renomeado para MedicosScreen
     </View>
   );
 }
-
-// Estilos para MedicosScreen - movidos para um novo arquivo 'src/features/Medicos/MedicosScreen/styles.js'

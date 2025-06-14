@@ -4,21 +4,13 @@ import Icon from 'react-native-vector-icons/FontAwesome5'; // Usando FontAwesome
 import { cardMedicoStyles } from './styles';
 
 export default function CardMedico({ medico, onView, onEdit, onDelete }) {
-  const displayedEspecialidades = medico.especialidades
-    ?.map(e => e.nome)
-    .slice(0, 3)
-    .join(', ');
-
-  const remainingEspecialidadesCount = medico.especialidades
-    ? medico.especialidades.length - (displayedEspecialidades ? displayedEspecialidades.split(', ').length : 0)
-    : 0;
+  // A especialidade agora é uma string diretamente no objeto medico, sem necessidade de mapear ou cortar.
 
   return (
     <TouchableOpacity onPress={onView} style={cardMedicoStyles.cardMedico}>
       <View style={cardMedicoStyles.cardMedicoImageContainer}>
         <Image
           source={{ uri: medico.imgUrl || 'https://via.placeholder.com/150/6a1b9a/ffffff?text=Médico' }}
-          // alt={`Foto de ${medico.nome}`} // REMOVIDO: 'alt' não existe em Image do RN
           accessibilityLabel={`Foto de ${medico.nome}`} // Adicionado para acessibilidade
           style={cardMedicoStyles.cardMedicoImg}
         />
@@ -33,13 +25,11 @@ export default function CardMedico({ medico, onView, onEdit, onDelete }) {
         <Icon name="phone" style={cardMedicoStyles.cardMedicoIcon} />
         <Text>Telefone: {medico.telefone}</Text>
       </Text>
-      {medico.especialidades && medico.especialidades.length > 0 && (
+      {/* Exibe a especialidade diretamente como uma string */}
+      {medico.especialidades && (
         <Text style={cardMedicoStyles.cardMedicoSpecialties}>
           <Icon name="tags" style={cardMedicoStyles.cardMedicoIcon} />
-          <Text style={cardMedicoStyles.cardMedicoLabel}>Especialidades:</Text> {displayedEspecialidades}
-          {remainingEspecialidadesCount > 0 && (
-            <Text style={cardMedicoStyles.cardMedicoMoreSpecialties}>... (+{remainingEspecialidadesCount})</Text>
-          )}
+          <Text style={cardMedicoStyles.cardMedicoLabel}>Especialidade:</Text> {medico.especialidades}
         </Text>
       )}
 

@@ -1,10 +1,9 @@
-// src/features/Consultas/ConsultaModal/index.js
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Modal, Alert, ScrollView, Platform } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Modal, Alert, ScrollView, Platform, Dimensions } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { consultaModalStyles } from './styles';
-import Icon from 'react-native-vector-icons/FontAwesome5'; // Para o botão X
+import { consultaModalStyles } from './styles'; 
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 export default function ConsultaModal({ isOpen, onClose, onSubmit, initialData, medicos, pacientes, isEdit, userRole }) {
   const [form, setForm] = useState({
@@ -12,9 +11,9 @@ export default function ConsultaModal({ isOpen, onClose, onSubmit, initialData, 
     pacienteId: '',
     dataConsulta: '',
   });
-  const [especialidades, setEspecialidades] = useState([]);
+  const [medicoEspecialidade, setMedicoEspecialidade] = useState(''); 
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [showTimePicker, setShowTimePicker] = useState(false); // Para controlar o picker de hora separadamente
+  const [showTimePicker, setShowTimePicker] = useState(false); 
   const [dateForPicker, setDateForPicker] = useState(new Date());
 
   useEffect(() => {
@@ -31,7 +30,7 @@ export default function ConsultaModal({ isOpen, onClose, onSubmit, initialData, 
           pacienteId: pacienteSelecionado ? pacienteSelecionado.pacienteId : '',
           dataConsulta: formattedInitialDate,
         });
-        setEspecialidades(medicoSelecionado?.especialidades || []);
+        setMedicoEspecialidade(medicoSelecionado?.especialidades || '');
         setDateForPicker(initialDateObj);
       } else {
         setForm({
@@ -39,7 +38,7 @@ export default function ConsultaModal({ isOpen, onClose, onSubmit, initialData, 
           pacienteId: '',
           dataConsulta: '',
         });
-        setEspecialidades([]);
+        setMedicoEspecialidade('');
         setDateForPicker(new Date());
       }
     }
@@ -48,28 +47,30 @@ export default function ConsultaModal({ isOpen, onClose, onSubmit, initialData, 
   function handleMedicoChange(itemValue) {
     setForm(prev => ({ ...prev, medicoId: itemValue }));
     const medico = medicos.find(m => m.crm === itemValue);
-    setEspecialidades(medico?.especialidades || []);
+    setMedicoEspecialidade(medico?.especialidades || '');
   }
 
   function handleChange(name, value) {
     setForm(prev => ({ ...prev, [name]: value }));
   }
 
-  // NOVO: Função para lidar com a seleção APENAS da data
   const onDateSelect = (event, selectedDate) => {
-    setShowDatePicker(false); // Fecha o picker de data
+    setShowDatePicker(false);
     if (event.type === 'set') {
       const currentDate = selectedDate || new Date();
-      setDateForPicker(currentDate); // Armazena a data selecionada
-      setShowTimePicker(true); // Abre o picker de hora em seguida
+      setDateForPicker(currentDate);
+      if (Platform.OS === 'android') { // No Android, precisamos abrir o TimePicker separadamente
+        setShowTimePicker(true);
+      } else { 
+        setShowTimePicker(true);
+      }
     }
   };
 
-  // NOVO: Função para lidar com a seleção APENAS da hora
   const onTimeSelect = (event, selectedTime) => {
-    setShowTimePicker(false); // Fecha o picker de hora
+    setShowTimePicker(false);
     if (event.type === 'set') {
-      const currentDateTime = selectedTime || dateForPicker; // Usa a data armazenada + a hora selecionada
+      const currentDateTime = selectedTime || dateForPicker;
       setDateForPicker(currentDateTime);
 
       const year = currentDateTime.getFullYear();
@@ -111,14 +112,18 @@ export default function ConsultaModal({ isOpen, onClose, onSubmit, initialData, 
     >
       <View style={consultaModalStyles.modalOverlay}>
         <View style={consultaModalStyles.modalContent}>
-          {/* Botão de fechar (X) */}
           <TouchableOpacity onPress={handleCloseAndReset} style={consultaModalStyles.modalCloseButton} accessibilityLabel="Fechar">
             <Icon name="times" style={consultaModalStyles.modalCloseIcon} />
           </TouchableOpacity>
 
           <Text style={consultaModalStyles.modalTitle}>{isEdit ? 'Editar Consulta' : 'Adicionar Consulta'}</Text>
-          
-          <ScrollView style={consultaModalStyles.scrollView} contentContainerStyle={consultaModalStyles.form}>
+
+          <ScrollView 
+            style={consultaModalStyles.scrollView} 
+            contentContainerStyle={consultaModalStyles.formContentContainer} 
+            showsVerticalScrollIndicator={false} // Opcional: esconder a barra de rolagem
+            keyboardShouldPersistTaps="handled" // Importante para que toques fora dos inputs fechem o teclado
+          >
             {isAdminOrMedico && (
               <>
                 <Text style={consultaModalStyles.label}>Paciente*</Text>
@@ -131,7 +136,6 @@ export default function ConsultaModal({ isOpen, onClose, onSubmit, initialData, 
                   >
                     <Picker.Item label="Selecione um paciente" value="" />
                     {pacientes.map(p => (
-                      // CORREÇÃO: Garanta que o label do Picker.Item seja uma string
                       <Picker.Item key={p.pacienteId} label={String(p.nome)} value={p.pacienteId} />
                     ))}
                   </Picker>
@@ -149,16 +153,15 @@ export default function ConsultaModal({ isOpen, onClose, onSubmit, initialData, 
               >
                 <Picker.Item label="Selecione um médico" value="" />
                 {medicos.map(m => (
-                  // CORREÇÃO: Garanta que o label do Picker.Item seja uma string
                   <Picker.Item key={m.crm} label={String(m.nome)} value={m.crm} />
                 ))}
               </Picker>
             </View>
 
-            <Text style={consultaModalStyles.label}>Especialidades do Médico</Text>
+            <Text style={consultaModalStyles.label}>Especialidade do Médico</Text>
             <TextInput
               style={consultaModalStyles.input}
-              value={especialidades.map(e => e.nome).join(', ')}
+              value={medicoEspecialidade || 'N/A'}
               editable={false}
               selectTextOnFocus={false}
               placeholderTextColor="#999"
@@ -166,28 +169,26 @@ export default function ConsultaModal({ isOpen, onClose, onSubmit, initialData, 
 
             <Text style={consultaModalStyles.label}>Data e Hora da Consulta*</Text>
             <TouchableOpacity onPress={() => setShowDatePicker(true)} style={consultaModalStyles.input}>
-              <Text style={form.dataConsulta ? { color: '#222' } : { color: '#999' }}>
+              <Text style={form.dataConsulta ? { color: '#333' } : { color: '#999' }}>
                 {form.dataConsulta ? new Date(form.dataConsulta).toLocaleString('pt-BR') : 'Selecionar Data e Hora'}
               </Text>
             </TouchableOpacity>
 
-            {/* DateTimePicker para SELEÇÃO DE DATA */}
             {showDatePicker && (
               <DateTimePicker
                 value={dateForPicker}
-                mode="date" // Apenas a data
-                display="default"
-                onChange={onDateSelect} // Callback para seleção de data
+                mode="date"
+                display={Platform.OS === 'ios' ? 'spinner' : 'default'} // 'spinner' para iOS é mais consistente
+                onChange={onDateSelect}
               />
             )}
 
-            {/* DateTimePicker para SELEÇÃO DE HORA */}
             {showTimePicker && (
               <DateTimePicker
-                value={dateForPicker} // Usa a data já selecionada para iniciar o seletor de hora
-                mode="time" // Apenas a hora
-                display="default"
-                onChange={onTimeSelect} // Callback para seleção de hora
+                value={dateForPicker}
+                mode="time"
+                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                onChange={onTimeSelect}
               />
             )}
           </ScrollView>

@@ -1,9 +1,6 @@
-// src/features/Medicos/MedicoModal/index.js
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert, Modal } from 'react-native'; // Removido Platform
-import { Picker } from '@react-native-picker/picker';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert, Modal } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import api from '../../../services/api';
 import { medicoModalStyles } from './styles';
 
 export default function MedicoModal({ isOpen, onClose, onSubmit, initialData, isEdit }) {
@@ -14,10 +11,8 @@ export default function MedicoModal({ isOpen, onClose, onSubmit, initialData, is
     telefone: '',
     imgUrl: '',
     senha: '',
-    especialidadesIds: []
+    especialidades: '' // Agora é uma string
   });
-
-  const [especialidades, setEspecialidades] = useState([]);
 
   useEffect(() => {
     if (isOpen) { // Apenas reage quando o modal está aberto
@@ -29,7 +24,7 @@ export default function MedicoModal({ isOpen, onClose, onSubmit, initialData, is
           telefone: initialData.telefone,
           imgUrl: initialData.imgUrl,
           senha: '',
-          especialidadesIds: initialData.especialidades?.map(e => e.especialidade_id) || []
+          especialidades: initialData.especialidades || '' // Define a especialidade como string
         });
       } else {
         setForm({
@@ -39,39 +34,16 @@ export default function MedicoModal({ isOpen, onClose, onSubmit, initialData, is
           telefone: '',
           imgUrl: '',
           senha: '',
-          especialidadesIds: []
+          especialidades: ''
         });
       }
     }
   }, [isOpen, initialData]);
 
-  useEffect(() => {
-    async function fetchEspecialidades() {
-      try {
-        const res = await api.get('/api/especialidades/get/all');
-        setEspecialidades(res.data);
-      } catch (error) {
-        console.error('Erro ao carregar especialidades', error);
-        Alert.alert('Erro', 'Não foi possível carregar as especialidades.');
-      }
-    }
-    fetchEspecialidades();
-  }, []);
+  // Removemos o useEffect para buscar especialidades da API, pois agora é um input de texto
 
   function handleChange(name, value) {
     setForm(prev => ({ ...prev, [name]: value }));
-  }
-
-  function handleEspecialidadeSelection(selectedId) {
-    const numericSelectedId = Number(selectedId); 
-    
-    let updatedIds;
-    if (form.especialidadesIds.includes(numericSelectedId)) {
-      updatedIds = form.especialidadesIds.filter(id => id !== numericSelectedId);
-    } else {
-      updatedIds = [...form.especialidadesIds, numericSelectedId];
-    }
-    setForm(prev => ({ ...prev, especialidadesIds: updatedIds }));
   }
 
   function handleCloseAndReset() {
@@ -79,17 +51,12 @@ export default function MedicoModal({ isOpen, onClose, onSubmit, initialData, is
   }
 
   function handleSubmit() {
-    if (!form.crm || !form.nome || !form.email || !form.telefone || (!isEdit && !form.senha) || form.especialidadesIds.length === 0) {
-      Alert.alert('Erro', 'Por favor, preencha todos os campos obrigatórios (CRM, Nome, Email, Telefone, Senha (se novo), e Especialidades).');
+    if (!form.crm || !form.nome || !form.email || !form.telefone || (!isEdit && !form.senha) || !form.especialidades) {
+      Alert.alert('Erro', 'Por favor, preencha todos os campos obrigatórios (CRM, Nome, Email, Telefone, Senha (se novo), e Especialidade).');
       return;
     }
     onSubmit(form);
   }
-
-  const selectedEspecialidadesNames = form.especialidadesIds
-    .map(id => especialidades.find(e => e.especialidade_id === id)?.nome)
-    .filter(Boolean)
-    .join(', ');
 
   return (
     <Modal
@@ -175,28 +142,16 @@ export default function MedicoModal({ isOpen, onClose, onSubmit, initialData, is
               </>
             )}
 
-            <Text style={medicoModalStyles.label}>Especialidades*</Text>
-            {/* Exibe especialidades selecionadas como texto simples */}
-            {selectedEspecialidadesNames.length > 0 && (
-                <Text style={medicoModalStyles.selectedSpecialtiesText}>
-                    Selecionado: {selectedEspecialidadesNames}
-                </Text>
-            )}
-            
-            {/* O Picker para seleção de especialidades */}
-            <View style={medicoModalStyles.pickerContainer}>
-              <Picker
-                selectedValue={form.especialidadesIds.length > 0 ? form.especialidadesIds[form.especialidadesIds.length - 1] : ''}
-                onValueChange={handleEspecialidadeSelection}
-                style={medicoModalStyles.picker}
-                mode="dropdown" // Ou 'dialog' para iOS/Android dialog
-              >
-                <Picker.Item label="Toque para adicionar/remover especialidades" value="" />
-                {especialidades.map(e => (
-                  <Picker.Item key={e.especialidade_id} label={e.nome} value={e.especialidade_id} />
-                ))}
-              </Picker>
-            </View>
+            <Text style={medicoModalStyles.label}>Especialidade*</Text>
+            {/* Campo de texto para a especialidade */}
+            <TextInput
+              style={medicoModalStyles.input}
+              name="especialidades"
+              value={form.especialidades}
+              onChangeText={(text) => handleChange('especialidades', text)}
+              placeholder="Ex: Cardiologista, Pediatra"
+              placeholderTextColor="#999"
+            />
           </ScrollView>
 
           <View style={medicoModalStyles.modalActions}>

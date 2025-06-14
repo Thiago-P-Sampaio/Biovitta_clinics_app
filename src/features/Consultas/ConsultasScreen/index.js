@@ -4,7 +4,7 @@ import api from '../../../services/api';
 import { useAuth } from '../../../context/AuthContext';
 import ConsultaModal from '../ConsultasModal/index'; // Caminho corrigido
 import { consultasScreenStyles } from './styles';
-import VARS from '../../../styles/variables'; // CORREÇÃO: Importa VARS do arquivo central como default
+import VARS from '../../../styles/variables'; // Importa VARS do arquivo central como default
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5'; // Importar Icon para o botão
 
@@ -118,16 +118,13 @@ export default function ConsultasScreen() {
 
   async function handleSubmit(data) {
     try {
-      // Ajuste para garantir que a dataConsulta esteja no formato correto para o backend
-      // Se a sua API espera um `LocalDateTime` ou um `Instant` com um fuso horário específico,
-      // você pode precisar de mais ajustes aqui. No geral, ISO String é o mais compatível.
       const dataToSend = {
-        dataConsulta: data.dataConsulta, // Já formatado em ConsultaModal
+        dataConsulta: data.dataConsulta, 
         medicoId: data.medicoId,
         pacienteId: user.role === 'paciente' ? user.pacienteId : data.pacienteId,
       };
 
-      console.log("Dados enviados para a API:", dataToSend); // Para depuração
+      console.log("Dados enviados para a API:", dataToSend); 
 
       if (isEdit) {
         dataToSend.consultaId = selectedConsulta.consultaId;
@@ -140,9 +137,10 @@ export default function ConsultasScreen() {
       fetchConsultas();
       setModalOpen(false);
       setSelectedConsulta(null);
-    } catch (error) {
-      console.error('Erro ao salvar consulta:', error.response?.data || error.message || error);
-      Alert.alert('Erro', error.response?.data?.message || 'Erro ao salvar consulta.');
+    } catch (err) {
+      console.error('Erro ao salvar consulta:', err.response?.data || err.message || err);
+      const errorMessage = err.response?.data?.message || 'Erro ao salvar consulta. Verifique os dados e tente novamente.';
+      Alert.alert('Erro', errorMessage);
     }
   }
 
@@ -191,17 +189,18 @@ export default function ConsultasScreen() {
                 {new Date(consulta.dataConsulta).toLocaleString('pt-BR')}
               </Text>
               <View style={consultasScreenStyles.actionsCell}>
+                {/* Botões um abaixo do outro com ícones */}
                 <TouchableOpacity
                   style={[consultasScreenStyles.btnAction, consultasScreenStyles.btnEdit]}
                   onPress={() => handleEdit(consulta)}
                 >
-                  <Text style={consultasScreenStyles.btnEditText}>Editar</Text>
+                  <Icon name="edit" size={16} color="white" />
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[consultasScreenStyles.btnAction, consultasScreenStyles.btnDelete]}
                   onPress={() => handleDelete(consulta)}
                 >
-                  <Text style={consultasScreenStyles.btnDeleteText}>Excluir</Text>
+                  <Icon name="trash-alt" size={16} color="white" />
                 </TouchableOpacity>
               </View>
             </View>

@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // ENDEREÇO LOCAL: http://192.168.1.170:8080/biovitta
 const api = axios.create({
-  baseURL: 'http://192.168.1.170:8080/biovitta', 
+  baseURL: 'https://biovitta.azurewebsites.net/biovitta', 
 });
 
 // Interceptor para adicionar o token

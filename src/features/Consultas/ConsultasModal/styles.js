@@ -1,120 +1,129 @@
-// src/features/Consultas/ConsultaModal/styles.js
-import { StyleSheet } from 'react-native';
-import VARS from '../../../styles/variables'; // Importa VARS do arquivo central
+import { StyleSheet, Dimensions } from 'react-native';
+
+const { height: screenHeight } = Dimensions.get('window');
 
 const consultaModalStyles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.4)',
+    backgroundColor: 'rgba(0,0,0,0.6)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   modalContent: {
     backgroundColor: 'white',
-    borderRadius: VARS.borderRadiusBase,
-    padding: VARS.spacingLg,
+    borderRadius: 12,
+    padding: 24,
     width: '90%',
-    maxWidth: 400,
+    maxWidth: 450,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.2,
-    shadowRadius: 32,
-    elevation: 10,
-    maxHeight: '90%', // Permite que o modal ocupe até 90% da altura da tela
-    overflow: 'hidden', // Importante para o borderRadius do modal funcionar
-    position: 'relative', // Essencial para posicionar o botão de fechar (X)
-    flexDirection: 'column', // Garante que o título, ScrollView e actions se organizem em coluna
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 8,
+    // Remover maxHeight e deixar o flexbox determinar a altura com base no conteúdo e no ScrollView
+    // maxHeight: screenHeight * 0.85, // Manter um limite de altura baseado na tela
+    maxHeight: '85%', // Tentar com porcentagem novamente, ou um valor fixo (ex: 600) se ainda houver problemas
+    overflow: 'hidden', // Manter hidden para o borderRadius funcionar no Modal
+    position: 'relative',
+    flexDirection: 'column',
   },
-  modalCloseButton: { // Estilo para o botão de fechar (X)
+  modalCloseButton: {
     position: 'absolute',
-    top: VARS.spacingSm,
-    right: VARS.spacingSm,
+    top: 10,
+    right: 10,
     zIndex: 10,
-    padding: VARS.spacingXs,
+    padding: 5,
     backgroundColor: 'transparent',
   },
   modalCloseIcon: {
     fontSize: 24,
-    color: VARS.textLight,
+    color: '#888',
   },
   modalTitle: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
-    marginBottom: VARS.spacingMd,
+    marginBottom: 20,
     textAlign: 'center',
-    color: VARS.primaryColor,
-    paddingRight: VARS.spacingLg + VARS.spacingSm, // Para não sobrepor o botão de fechar
+    color: '#6A1B9A',
+    paddingRight: 30, 
   },
-  scrollView: { // Estilo para a ScrollView dentro do modal
-    flex: 1, // Crucial para a ScrollView se expandir e permitir rolagem
+  scrollView: {
+    flex: 1, // **CRUCIAL**: Permite que a ScrollView se expanda e ocupe o espaço restante
     width: '100%',
+    // Para debug visual: backgroundColor: 'lightblue',
   },
-  form: { // contentContainerStyle da ScrollView
-    flexGrow: 1, // Permite que o conteúdo do formulário empurre o footer para baixo
-    paddingBottom: VARS.spacingLg * 2, // Espaçamento inferior generoso para a ScrollView não cortar
+  formContentContainer: { // Renomeado de 'form' para 'formContentContainer'
+    flexGrow: 1, // Permite que o conteúdo do formulário se estenda e role
+    paddingBottom: 20, // Espaçamento inferior para evitar que o último input seja cortado
+    // Para debug visual: backgroundColor: 'lightgreen',
   },
   label: {
     fontSize: 16,
     fontWeight: '600',
-    color: VARS.textDark,
-    marginBottom: 4,
-    marginTop: VARS.spacingSm,
+    color: '#333',
+    marginBottom: 8,
+    marginTop: 15,
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: '#ddd',
     borderRadius: 8,
-    paddingVertical: 10,
+    paddingVertical: 14,
     paddingHorizontal: 12,
     fontSize: 16,
-    color: VARS.textDark,
-    marginBottom: VARS.spacingSm,
-    minHeight: 45,
+    color: '#333',
+    marginBottom: 15,
+    minHeight: 50,
     justifyContent: 'center',
+    backgroundColor: '#f9f9f9',
   },
   pickerContainer: {
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 6,
+    borderColor: '#ddd',
+    borderRadius: 8,
     overflow: 'hidden',
-    minHeight: 40,
+    minHeight: 50,
     justifyContent: 'center',
-    marginBottom: VARS.spacingSm,
+    marginBottom: 15,
+    backgroundColor: '#f9f9f9',
   },
   picker: {
     width: '100%',
-    height: 40,
-    color: VARS.textDark,
+    height: 50,
+    color: '#333',
   },
   modalActions: {
-    marginTop: VARS.spacingMd,
+    marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    gap: VARS.spacingSm,
+    gap: 10,
     borderTopWidth: 1,
-    borderTopColor: VARS.borderLight,
-    paddingTop: VARS.spacingMd,
+    borderTopColor: '#eee',
+    paddingTop: 20,
+    width: '100%',
   },
   btn: {
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: 6,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
   },
   btnCancel: {
-    backgroundColor: '#eee',
+    backgroundColor: '#ccc',
   },
   btnCancelText: {
-    color: VARS.textDark,
+    color: '#555',
     fontWeight: '600',
+    fontSize: 16,
   },
   btnSave: {
-    backgroundColor: '#2563eb',
+    backgroundColor: '#6A1B9A',
   },
   btnSaveText: {
     color: 'white',
     fontWeight: '600',
+    fontSize: 16,
   },
 });
 

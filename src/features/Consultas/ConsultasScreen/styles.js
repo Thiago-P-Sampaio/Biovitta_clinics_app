@@ -1,4 +1,3 @@
-// src/features/Consultas/ConsultasScreen/styles.js
 import { StyleSheet } from 'react-native';
 import VARS from '../../../styles/variables'; // Importa VARS do arquivo central
 
@@ -19,10 +18,10 @@ const consultasScreenStyles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 8,
-    flexDirection: 'row', // Para alinhar ícone e texto
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    alignSelf: 'flex-start', // Para que o botão não ocupe toda a largura
+    alignSelf: 'flex-start',
     marginBottom: VARS.spacingMd,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -50,10 +49,11 @@ const consultasScreenStyles = StyleSheet.create({
     borderBottomColor: '#ddd',
   },
   tableHeaderCell: {
-    flex: 1,
     fontWeight: 'bold',
     textAlign: 'center',
     paddingHorizontal: 5,
+    fontSize: 12,
+    flex: 1,
   },
   tableRow: {
     flexDirection: 'row',
@@ -67,33 +67,34 @@ const consultasScreenStyles = StyleSheet.create({
     flex: 1,
     textAlign: 'center',
     paddingHorizontal: 5,
-    fontSize: 14,
+    fontSize: 12,
   },
   actionsCell: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'column', // Botões um abaixo do outro
     justifyContent: 'center',
-    gap: 5, // Espaçamento entre os botões
+    alignItems: 'center', // Centraliza os botões
+    paddingHorizontal: 2,
   },
   btnAction: {
-    paddingVertical: 6,
-    paddingHorizontal: 10,
+    paddingVertical: 6, // Aumentado para melhor toque
+    paddingHorizontal: 10, // Aumentado para melhor toque
     borderRadius: 6,
     alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 2, // Espaçamento vertical entre os botões
+    minWidth: 60, // Adicionar largura mínima para os botões
+  },
+  btnActionText: { 
+    color: 'white',
+    fontSize: 10,
+    fontWeight: 'bold',
   },
   btnEdit: {
-    backgroundColor: '#2563eb',
-  },
-  btnEditText: {
-    color: 'white',
-    fontSize: 12,
+    backgroundColor: '#2563eb', // Azul
   },
   btnDelete: {
-    backgroundColor: '#dc2626',
-  },
-  btnDeleteText: {
-    color: 'white',
-    fontSize: 12,
+    backgroundColor: '#dc2626', // Vermelho
   },
   emptyTableText: {
     textAlign: 'center',
